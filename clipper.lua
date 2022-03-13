@@ -27,6 +27,7 @@ function render_clip(start_time, end_time, name)
         "-ss", tostring(start_time),
         "-to", tostring(end_time),
         "-i", infile,
+        "-t", tostring(end_time - start_time),
         outfile
     )
 
