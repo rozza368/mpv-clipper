@@ -1,7 +1,7 @@
 # Clipper
 
 Clipper aims to make it easy to grab a small part from a video into a new file, all from within mpv.
-It supports Linux but may not work with other operating systems yet.
+It supports Linux but has not been tested with other operating systems.
 
 ## Usage
 Pressing `g` shows the times when the current subtitle on screen will start and end.
@@ -9,12 +9,12 @@ Pressing `G` will render to a file the part of the video that the current subtit
 
 ## Features
 ### Current
-- Render clip containing current subtitle line to a file
+- Render clip containing audio corresponding to current subtitle line to a file
+- Output audio track matches currently selected track
 
 ### To Add
 - Manually select times to render between
 - Allow selecting multiple subtitle lines
-- Output audio track should match the currently selected one
 
 ### In the Future
 - Select file extension for the clip
@@ -24,6 +24,8 @@ Pressing `G` will render to a file the part of the video that the current subtit
 ## Installation
 ### Script Directory
 Linux: `~/.config/mpv/scripts`
+Windows: `%APPDATA%\mpv\scripts`
+Mac: `(same as Linux)`
 
 ### Method 1
 Download the raw file `clipper.lua` and place it into the script directory.
