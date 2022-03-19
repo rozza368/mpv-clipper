@@ -18,24 +18,35 @@ end
 function render_clip(start_time, end_time, name)
     local basedir = homedir
     local outfile = string.format("%s/Videos/%s.mp4", basedir, name)
-    local infile = mp.get_property_osd("filename")
-    print(infile, "to", outfile)
-    local result = mp.commandv(
-        "run", "ffmpeg",
-        "-n", -- no overwrite
-        "-loglevel", "quiet",
-        "-ss", tostring(start_time),
-        "-to", tostring(end_time),
-        "-i", infile,
-        "-t", tostring(end_time - start_time),
-        outfile
-    )
+    local infile = mp.get_property("path")
+    local audio_track_id = mp.get_property("aid")
 
-    if result then
-        mp.osd_message(string.format("Rendered %s - %s", start_time, end_time))
-    else
-        mp.osd_message("Failed to render clip")
+    print(infile, "to", outfile)
+
+    local args = {
+        'mpv',
+        infile,
+        '--loop-file=no',
+        '--no-ocopy-metadata',
+        '--no-sub',
+        table.concat { '--start=', start_time },
+        table.concat { '--end=', end_time },
+        table.concat { '--aid=', audio_track_id },
+        table.concat { '-o=', outfile }
+    }
+
+    local process_result = function(success, result, err)
+        if success then
+            mp.osd_message(string.format("Rendered %s - %s to %s", start_time, end_time, outfile))
+        else
+            mp.osd_message("Rendering failed.")
+        end
     end
+
+    mp.command_native_async({
+        name = "subprocess",
+        args = args
+    }, process_result)
 end
 
 function show_sub_time()             
